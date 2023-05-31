@@ -1,3 +1,5 @@
+part of 'custom_model.dart';
+
 enum ItemType {
   HOLD,
   CANCEL,

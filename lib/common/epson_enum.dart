@@ -1,3 +1,5 @@
+part of 'epson_model.dart';
+
 /// enum
 /// create by marks 2023/05/30
 

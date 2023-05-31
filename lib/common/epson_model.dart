@@ -1,4 +1,4 @@
-import 'epson_enum.dart';
+part 'epson_enum.dart';
 
 /// models
 /// create by marks 2023/05/30

@@ -1,4 +1,4 @@
-import 'custom_enum.dart';
+part 'custom_enum.dart';
 
 class Config {
   String host;

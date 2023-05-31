@@ -4,7 +4,6 @@ import 'package:dio/dio.dart' hide Response;
 import 'package:xml/xml.dart';
 import 'package:xml2json/xml2json.dart';
 
-import '../common/custom_enum.dart';
 import '../common/custom_model.dart';
 import '../common/custom_client.dart';
 

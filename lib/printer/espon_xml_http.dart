@@ -6,7 +6,6 @@ import 'package:xml/xml.dart';
 import 'package:xml2json/xml2json.dart';
 
 import '../common/espon_client.dart';
-import '../common/epson_enum.dart';
 
 class EpsonXmlHttpClient extends BaseEpsonClient {
   EpsonXmlHttpClient(super.config);
