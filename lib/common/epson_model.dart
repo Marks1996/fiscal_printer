@@ -23,6 +23,11 @@ class Response {
     this.body,
     this.original,
   });
+  Map<String, dynamic> toJson() => {
+        'ok': ok,
+        'body': body,
+        'original': original,
+      };
 }
 
 class Original {
