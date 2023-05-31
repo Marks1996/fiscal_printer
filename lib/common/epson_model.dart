@@ -124,11 +124,25 @@ class Sale {
   num? unitPrice;
   String? department;
   String? justification;
+  Sale({
+    this.type,
+    this.operations,
+    this.operator,
+    this.description,
+    this.quantity,
+    this.unitPrice,
+    this.department,
+    this.justification,
+  });
 }
 
 class Lottery {
   String? code;
   String? operator;
+  Lottery({
+    this.code,
+    this.operator,
+  });
 }
 
 class Message {
@@ -189,35 +203,66 @@ class Refund {
   String? description;
   String? department;
   String? justification;
+  Refund({
+    this.type,
+    this.optType,
+    this.operation,
+    this.operator,
+    this.quantity,
+    this.unitPrice,
+    this.amount,
+    this.description,
+    this.department,
+    this.justification,
+  });
 }
 
 class Subtotal {
   ItemType? type;
-
   SubtotalOpt? option;
   List<Operation>? operations;
   String? operator;
+
+  Subtotal({
+    this.type,
+    this.option,
+    this.operations,
+    this.operator,
+  });
 }
 
 class Payment {
   PaymentType? paymentType;
-
   String? index;
-
   String? operator;
   String? description;
   num? payment;
   String? justification;
+  Payment({
+    this.paymentType,
+    this.index,
+    this.operator,
+    this.description,
+    this.payment,
+    this.justification,
+  });
 }
 
 class Operation {
   OperationType? type;
-
   String? operator;
   num? amount;
   String? description;
   String? department;
   String? justification;
+  Operation({
+    this.type,
+    this.operator,
+    this.amount,
+    this.description,
+    this.department,
+    this.justification,
+  });
 }
 
 // export type Message = {
@@ -242,11 +287,20 @@ class GraphicCoupon {
   String? format;
   String? value;
   String? operator;
+  GraphicCoupon({
+    this.format,
+    this.value,
+    this.operator,
+  });
 }
 
 class PersonTaxCode {
   String? code;
   String? operator;
+  PersonTaxCode({
+    this.code,
+    this.operator,
+  });
 }
 
 class Logo {
@@ -256,6 +310,14 @@ class Logo {
   String? format;
   String? value;
   String? operator;
+  Logo({
+    this.location,
+    this.index,
+    this.option,
+    this.format,
+    this.value,
+    this.operator,
+  });
 }
 
 class BarCode {
