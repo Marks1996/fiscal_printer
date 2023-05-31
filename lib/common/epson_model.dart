@@ -26,7 +26,7 @@ class Response {
   Map<String, dynamic> toJson() => {
         'ok': ok,
         'body': body,
-        'original': original,
+        'original': original?.toJson(),
       };
 }
 
@@ -34,6 +34,10 @@ class Original {
   dynamic req;
   dynamic res;
   Original({this.req, this.res});
+  Map<String, dynamic> toJson() => {
+        'req': req,
+        'res': res,
+      };
 }
 
 class OpenDrawer {
