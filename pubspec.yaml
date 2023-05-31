@@ -7,11 +7,11 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
-  dio: ^4.0.6
   flutter:
     sdk: flutter
   xml: ^6.2.2
   xml2json: ^5.3.6
+  dio: any
 
 dev_dependencies:
   flutter_test:

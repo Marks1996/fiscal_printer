@@ -16,14 +16,17 @@ class Config {
 
 class Response {
   bool ok;
+  Map? request;
   dynamic body;
   Original? original;
   Response({
     required this.ok,
+    this.request,
     this.body,
     this.original,
   });
   Map<String, dynamic> toJson() => {
+        'request': request,
         'ok': ok,
         'body': body,
         'original': original?.toJson(),

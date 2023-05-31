@@ -404,6 +404,10 @@ class EpsonXmlHttpClient extends BaseEpsonClient {
     final res = await Dio(options).post(url, data: xmlStr);
 
     final response = parseResponse(res.data);
+    response.request = {
+      'path': res.requestOptions.path,
+      'data': res.requestOptions.data,
+    };
     response.original = Original(req: xmlStr, res: res.data);
     return response;
   }
@@ -426,11 +430,13 @@ class EpsonXmlHttpClient extends BaseEpsonClient {
 
   /// Response Message Format:
   /// <?xml version="1.0" encoding="utf-8"?>
-  /// <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
-  ///      <s:Body>
-  ///          <response success="true" code="" status="xxxxx" />
-  ///      </s:Body>
-  /// </s:Envelope>
+  /// <soapenv:Envelope
+  ///     xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  ///     <soapenv:Body>
+  ///         <response success="true" code="" status="xxx">
+  ///         </response>
+  ///     </soapenv:Body>
+  /// </soapenv:Envelope>
   /// [xmlStr]
   Response parseResponse(String xmlStr) {
     // create xml parser
@@ -440,7 +446,7 @@ class EpsonXmlHttpClient extends BaseEpsonClient {
     final parser = Xml2Json();
     // parse to object
     parser.parse(xmlStr);
-    var xmlObj = parser.toBadgerfish();
+    var xmlObj = parser.toParkerWithAttrs();
     var xmlJson = jsonDecode(xmlObj);
     if (xmlJson != null &&
         xmlJson[EpsonXmlHttpClient._xmlResRoot] != null &&
@@ -452,7 +458,7 @@ class EpsonXmlHttpClient extends BaseEpsonClient {
           [EpsonXmlHttpClient._xmlResBody][EpsonXmlHttpClient._xmlResponse];
     }
     return Response(
-      ok: (response != null && (response['@success'] == 'true')) ? true : false,
+      ok: (response != null && (response['_success'] == 'true')) ? true : false,
       body: response,
     );
   }
