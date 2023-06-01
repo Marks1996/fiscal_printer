@@ -103,14 +103,13 @@ class CustomXmlHttpClient extends BaseCustomClient {
     //   'authorization': authorization,
     // };
     final headers = {
-      HttpHeaders.contentTypeHeader:
-          ContentType('text', 'xml', charset: 'utf-8'),
+      HttpHeaders.contentTypeHeader: 'text/xml; charset=utf-8',
       HttpHeaders.authorizationHeader: authorization,
     };
     final httpClient = HttpClient();
     final req = await httpClient.postUrl(Uri.parse(url));
     // add headers
-    headers.forEach((key, value) => req.headers.add(key, value));
+    headers.forEach((key, value) => req.headers.set(key, value));
     req.write(xmlStr);
     final res = await req.close();
     final data = await res.transform(utf8.decoder).join();
