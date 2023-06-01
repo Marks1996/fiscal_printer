@@ -112,6 +112,7 @@ class CustomXmlHttpClient extends BaseCustomClient {
     final data = await res.transform(utf8.decoder).join();
     final resXmlStr = data;
     final response = parseResponse(data, isGetInfo);
+    response.requestHeaders = req.headers;
     response.original = Original(
       req: xmlStr,
       res: resXmlStr,

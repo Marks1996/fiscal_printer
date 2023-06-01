@@ -15,10 +15,13 @@ class Response {
   dynamic body;
   Original? original;
 
+  dynamic requestHeaders;
+
   Response({
     required this.ok,
     this.body,
     this.original,
+    this.requestHeaders,
   });
 }
 

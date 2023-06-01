@@ -19,11 +19,14 @@ class Response {
   Map? request;
   dynamic body;
   Original? original;
+
+  dynamic requestHeaders;
   Response({
     required this.ok,
     this.request,
     this.body,
     this.original,
+    this.requestHeaders,
   });
   Map<String, dynamic> toJson() => {
         'request': request,
