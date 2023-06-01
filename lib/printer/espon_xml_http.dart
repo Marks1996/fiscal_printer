@@ -398,16 +398,19 @@ class EpsonXmlHttpClient extends BaseEpsonClient {
     final xmlStr = parseRequest(xmlDoc);
 
     /// send
-    final headers = {'Content-Type': 'text/xml;charset=utf-8'};
+    final headers = {
+      HttpHeaders.contentTypeHeader:
+          ContentType('text', 'xml', charset: 'utf-8'),
+    };
     // final options =
     //     BaseOptions(headers: {'Content-Type': 'text/xml;charset=utf-8'});
 
     // final res = await Dio(options).post(url, data: xmlStr);
+
     final httpClient = HttpClient();
     final req = await httpClient.postUrl(Uri.parse(url));
-    headers.forEach((key, value) {
-      req.headers.add(key, value);
-    });
+    // add header
+    headers.forEach((key, value) => req.headers.add(key, value));
     req.write(xmlStr);
     final res = await req.close();
     final data = await res.transform(utf8.decoder).join();
