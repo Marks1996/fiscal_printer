@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
+import 'package:dio/dio.dart' hide Response;
 
 import 'package:xml/xml.dart';
 import 'package:xml2json/xml2json.dart';
@@ -96,26 +96,22 @@ class CustomXmlHttpClient extends BaseCustomClient {
     final url = 'http://${config.host}/xml/printer.htm';
     // build xml string
     final xmlStr = _parseRequest(xmlDoc);
+    // send
     final authorization =
         'Basic ${base64.encode(utf8.encode('${config.fiscalId ?? ''}:${config.fiscalId ?? ''}'))}';
-    // final headers = {
-    //   'Content-Type': 'text/xml;charset=utf-8',
-    //   'authorization': authorization,
-    // };
     final headers = {
-      HttpHeaders.contentTypeHeader: 'text/xml; charset=utf-8',
-      HttpHeaders.authorizationHeader: authorization,
+      'Content-Type': 'text/xml;charset=utf-8',
+      'authorization': authorization,
     };
-    final httpClient = HttpClient();
-    final req = await httpClient.postUrl(Uri.parse(url));
-    // add headers
-    headers.forEach((key, value) => req.headers.set(key, value));
-    req.write(xmlStr);
-    final res = await req.close();
-    final data = await res.transform(utf8.decoder).join();
+    final res =
+        await Dio(BaseOptions(headers: headers)).post(url, data: xmlStr);
+    final data = res.data;
     final resXmlStr = data;
     final response = parseResponse(data, isGetInfo);
+    final req = res.requestOptions;
     response.request = {
+      'path': req.path,
+      'data': req.data,
       'headers': req.headers,
     };
     response.original = Original(
