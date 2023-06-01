@@ -14,15 +14,21 @@ class Response {
   bool ok;
   dynamic body;
   Original? original;
-
-  dynamic requestHeaders;
+  dynamic request;
 
   Response({
     required this.ok,
     this.body,
     this.original,
-    this.requestHeaders,
+    this.request,
   });
+
+  Map<String, dynamic> toJson() => {
+        'ok': ok,
+        'body': body,
+        'original': original?.toJson(),
+        'request': request,
+      };
 }
 
 class Original {
@@ -33,6 +39,11 @@ class Original {
     required this.req,
     required this.res,
   });
+
+  Map<String, dynamic> toJson() => {
+        'req': req,
+        'res': res,
+      };
 }
 
 class OpenDrawer {
