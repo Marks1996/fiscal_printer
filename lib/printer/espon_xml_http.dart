@@ -1,6 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
 
-import 'package:dio/dio.dart' hide Response;
 import 'package:fiscal_printer/common/epson_model.dart';
 import 'package:xml/xml.dart';
 import 'package:xml2json/xml2json.dart';
@@ -398,17 +398,26 @@ class EpsonXmlHttpClient extends BaseEpsonClient {
     final xmlStr = parseRequest(xmlDoc);
 
     /// send
-    final options =
-        BaseOptions(headers: {'Content-Type': 'text/xml;charset=utf-8'});
+    // final options =
+    //     BaseOptions(headers: {'Content-Type': 'text/xml;charset=utf-8'});
 
-    final res = await Dio(options).post(url, data: xmlStr);
-
-    final response = parseResponse(res.data);
+    // final res = await Dio(options).post(url, data: xmlStr);
+    final httpClient = HttpClient();
+    final req = await httpClient.postUrl(Uri.parse(url));
+    req.headers.contentType = ContentType.text;
+    req.write(xmlStr);
+    final res = await req.close();
+    final data = await res.transform(utf8.decoder).join();
+    final resXmlStr = data;
+    final response = parseResponse(resXmlStr);
     response.request = {
-      'path': res.requestOptions.path,
-      'data': res.requestOptions.data,
+      'path': url,
+      'data': xmlStr,
     };
-    response.original = Original(req: xmlStr, res: res.data);
+    response.original = Original(
+      req: xmlStr,
+      res: resXmlStr,
+    );
     return response;
   }
 
