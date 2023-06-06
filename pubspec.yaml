@@ -3,7 +3,7 @@ description: Espon fiscal Printer.
 version: 0.0.1
 homepage: https://github.com/Marks1996/fiscal_printer
 environment:
-  sdk: '>=2.19.2 <=3.0.0'
+  sdk: '>=2.19.2 <3.0.0'
 
 dependencies:
   xml: ^6.2.2
