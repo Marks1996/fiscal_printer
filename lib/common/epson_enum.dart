@@ -64,6 +64,7 @@ enum PaymentType {
 
 enum CommandCode {
   OPEN_DRAWER,
+
   // AUTHORIZESALES,
   // BEGIN_TRAINING,
   // EFTPOS_DAILY_CLOSURE,
