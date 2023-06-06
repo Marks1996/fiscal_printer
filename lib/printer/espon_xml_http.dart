@@ -69,7 +69,6 @@ class EpsonXmlHttpClient extends BaseEpsonClient {
   XmlDocumentFragment _convertReceiptToXmlDoc(Receipt receipt) {
     /// init
     final xmlBuilder = XmlBuilder();
-    xmlBuilder.processing('xml', 'version="1.0"');
     xmlBuilder.element('printerFiscalReceipt', nest: () {
       /// begin
       xmlBuilder.element('beginFiscalReceipt',
