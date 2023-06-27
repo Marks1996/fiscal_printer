@@ -67,6 +67,7 @@ class Receipt {
   GraphicCoupon? graphicCoupon;
   OpenDrawer? openDrawer;
   Message? personalTaxCode;
+  Message? refundMessage;
   Receipt({
     this.operator,
     this.sales,
@@ -79,6 +80,7 @@ class Receipt {
     this.graphicCoupon,
     this.openDrawer,
     this.personalTaxCode,
+    this.refundMessage,
   });
 }
 
