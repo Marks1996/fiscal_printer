@@ -149,7 +149,7 @@ class CustomXmlHttpClient extends BaseCustomClient {
       'docRefZ': cancel.docRefZ,
       'docRefNumber': cancel.docRefNumber,
       'docDate': cancel.docDate,
-      'checkOnly': cancel.checkOnly?.name ?? EnableType.ABLE.name,
+      'checkOnly': '0',
     };
 
     if (cancel.printPreview != null) {
@@ -167,7 +167,7 @@ class CustomXmlHttpClient extends BaseCustomClient {
         xmlBuilder.element('beginRtDocAnnulment', attributes: commonLabel);
       } else {
         // Execution of return document
-        xmlBuilder.element('beginRtDocAnnulment', attributes: commonLabel);
+        xmlBuilder.element('beginRtDocRefund', attributes: commonLabel);
         if (cancel.cancelRecItems != null &&
             cancel.cancelRecItems!.isNotEmpty) {
           for (var recItem in cancel.cancelRecItems!) {
@@ -221,6 +221,7 @@ class CustomXmlHttpClient extends BaseCustomClient {
     xmlBuilder.element('printerFiscalReceipt', nest: () {
       // begin
       xmlBuilder.element('beginFiscalReceipt');
+
       if (receipt.beginDisplayText != null) {
         xmlBuilder.element('displayText',
             attributes: {'data': receipt.beginDisplayText?.data ?? ''});
@@ -354,15 +355,7 @@ class CustomXmlHttpClient extends BaseCustomClient {
           });
         }
       }
-      // personalTaxCode
-      // if (receipt.personalTaxCode) {
-      //     const { message = '', messageType = '3', font = 'B' } = receipt.personalTaxCode;
-      //     printerFiscalReceipt.ele('printRecMessage', {
-      //         message,
-      //         messageType,
-      //         font
-      //     });
-      // }
+
       // barCode
       if (receipt.barCode != null) {
         xmlBuilder.element('printBarCode', attributes: {

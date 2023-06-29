@@ -50,6 +50,10 @@ class OpenDrawer {
   String? operator;
 
   OpenDrawer({this.operator});
+
+  toJson() => {
+        'operator': operator,
+      };
 }
 
 class Sale {
@@ -70,6 +74,15 @@ class Sale {
     this.department,
     this.idVat,
   });
+  toJson() => {
+        'type': type,
+        'operations': operations?.map((e) => e.toJson()).toList(),
+        'description': description,
+        'quantity': quantity,
+        'unitPrice': unitPrice,
+        'department': department,
+        'idVat': idVat,
+      };
 }
 
 class CommonSale {
@@ -92,6 +105,10 @@ class Lottery {
   String code;
 
   Lottery({required this.code});
+
+  toJson() => {
+        'code': code,
+      };
 }
 
 class Message {
@@ -128,12 +145,20 @@ class Message {
     required this.messageType,
     required this.font,
   });
+
+  toJson() => {
+        'message': message,
+        'messageType': messageType,
+        'font': font,
+      };
 }
 
 class DisplayText {
   String data;
 
   DisplayText({required this.data});
+
+  toJson() => {'data': data};
 }
 
 class Refund {
@@ -152,6 +177,14 @@ class Refund {
     this.department,
     this.idVat,
   });
+  toJson() => {
+        'type': type,
+        'description': description,
+        'quantity': quantity,
+        'unitPrice': unitPrice,
+        'department': department,
+        'idVat': idVat,
+      };
 }
 
 class Subtotal {
@@ -162,6 +195,12 @@ class Subtotal {
     required this.type,
     this.operations,
   });
+
+  /// toJson method
+  toJson() => {
+        'type': type,
+        'operations': operations?.map((e) => e.toJson()),
+      };
 }
 
 class Payment {
@@ -176,6 +215,13 @@ class Payment {
     this.payment,
     this.paymentQty,
   });
+
+  toJson() => {
+        'paymentType': paymentType?.name,
+        'description': description,
+        'payment': payment,
+        'paymentQty': paymentQty,
+      };
 }
 
 class Operation {
@@ -194,6 +240,15 @@ class Operation {
     this.idVat,
     this.quantity,
   });
+
+  toJson() => {
+        'adjustmentType': adjustmentType.name,
+        'amount': amount,
+        'description': description,
+        'department': department,
+        'idVat': idVat,
+        'quantity': quantity,
+      };
 }
 
 class GraphicCoupon {
@@ -206,6 +261,11 @@ class GraphicCoupon {
     this.value,
     this.operator,
   });
+  toJson() => {
+        'format': format,
+        'value': value,
+        'operator': operator,
+      };
 }
 
 class PersonTaxCode {
@@ -224,15 +284,26 @@ class BarCode {
   String data;
   String? operator;
 
-  BarCode(
-      {required this.data,
-      this.position,
-      this.width,
-      this.height,
-      this.hriPosition,
-      this.hriFont,
-      this.type,
-      this.operator});
+  BarCode({
+    required this.data,
+    this.position,
+    this.width,
+    this.height,
+    this.hriPosition,
+    this.hriFont,
+    this.type,
+    this.operator,
+  });
+  toJson() => {
+        'data': data,
+        'position': position,
+        'width': width,
+        'height': height,
+        'hriPosition': hriPosition,
+        'hriFont': hriFont,
+        'type': type,
+        'operator': operator,
+      };
 }
 
 class QrCode {
@@ -250,6 +321,15 @@ class QrCode {
       this.errorCorrection,
       this.type,
       this.operator});
+
+  toJson() => {
+        'data': data,
+        'alignment': alignment,
+        'size': size,
+        'errorCorrection': errorCorrection,
+        'type': type,
+        'operator': operator,
+      };
 }
 
 class Receipt {
@@ -266,7 +346,6 @@ class Receipt {
   Message? personalTaxCode;
   DisplayText? beginDisplayText;
   DisplayText? endDisplayText;
-
   Receipt({
     this.operator,
     this.sales,
@@ -282,6 +361,23 @@ class Receipt {
     this.beginDisplayText,
     this.endDisplayText,
   });
+
+  /// toJson method
+  Map toJson() => {
+        'operator': operator,
+        'sales': sales?.map((e) => e.toJson()),
+        'lottery': lottery?.toJson(),
+        'refunds': refunds?.map((e) => e.toJson()),
+        'subtotals': subtotals?.map((e) => e.toJson()),
+        'payments': payments?.map((e) => e.toJson()),
+        'barCode': barCode?.toJson(),
+        'qrCode': qrCode?.toJson(),
+        'graphicCoupon': graphicCoupon?.toJson(),
+        'openDrawer': openDrawer?.toJson(),
+        'personalTaxCode': personalTaxCode?.toJson(),
+        'beginDisplayText': beginDisplayText?.toJson(),
+        'endDisplayText': endDisplayText?.toJson(),
+      };
 }
 
 class Report {
