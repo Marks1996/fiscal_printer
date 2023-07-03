@@ -82,7 +82,7 @@ class CustomXmlHttpClient extends BaseCustomClient {
           : CustomXmlHttpClient._xmlResponse];
     }
     return Response(
-      ok: response != null && response['@success'] == 'true',
+      ok: response != null && response['_success'] == 'true',
       body: response,
     );
   }
@@ -288,7 +288,7 @@ class CustomXmlHttpClient extends BaseCustomClient {
             final recRefund = <String, String>{
               'description': refund.description ?? '',
               'quantity': refund.quantity.toString(),
-              'unitPrice': refund.unitPrice.toString(),
+              'unitPrice': refund.unitPrice.toInt().toString(),
               'department': refund.department?.toString() ?? '1',
             };
             if (refund.idVat != null) {
@@ -320,7 +320,7 @@ class CustomXmlHttpClient extends BaseCustomClient {
               for (final operation in subtotal.operations!) {
                 final recSubtotalAdjustment = <String, String>{
                   'description': operation.description ?? '',
-                  'amount': operation.amount.toString(),
+                  'amount': operation.amount.toInt().toString(),
                   'adjustmentType':
                       [2, 3].contains(operation.adjustmentType.value)
                           ? operation.adjustmentType.value.toString()
@@ -350,7 +350,7 @@ class CustomXmlHttpClient extends BaseCustomClient {
         for (final payment in receipt.payments!) {
           xmlBuilder.element('printRecTotal', attributes: {
             'description': payment.description ?? '',
-            'payment': payment.payment?.toString() ?? '0',
+            'payment': payment.payment?.toInt().toString() ?? '0',
             'paymentType': payment.paymentType?.name ?? '0',
           });
         }

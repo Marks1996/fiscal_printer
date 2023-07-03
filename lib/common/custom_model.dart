@@ -206,7 +206,7 @@ class Subtotal {
 class Payment {
   PaymentType? paymentType;
   String? description;
-  double? payment;
+  num? payment;
   int? paymentQty;
 
   Payment({
