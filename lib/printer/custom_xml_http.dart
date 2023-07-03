@@ -75,7 +75,7 @@ class CustomXmlHttpClient extends BaseCustomClient {
     final jsonStr = parser.toBadgerfish();
     final xmlObj = jsonDecode(jsonStr);
     Map? response;
-    if (xmlObj != null && xmlObj.children.isNotEmpty) {
+    if (xmlObj != null && xmlObj.isNotEmpty) {
       // get response data
       response = xmlObj[isGetInfo
           ? CustomXmlHttpClient._infoXmlResponse
