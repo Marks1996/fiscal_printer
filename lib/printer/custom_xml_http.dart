@@ -174,7 +174,7 @@ class CustomXmlHttpClient extends BaseCustomClient {
             xmlBuilder.element('printRecItem', attributes: {
               'description': recItem.description ?? '',
               'quantity': recItem.quantity.toString(),
-              'unitPrice': recItem.unitPrice.toString(),
+              'unitPrice': recItem.unitPrice.toInt().toString(),
               'department': recItem.department?.toString() ?? '1',
             });
           }
@@ -237,11 +237,11 @@ class CustomXmlHttpClient extends BaseCustomClient {
           final commonSale = <String, String>{
             'description': sale.description ?? '',
             'quantity': sale.quantity.toString(),
-            'unitPrice': sale.unitPrice.toString(),
+            'unitPrice': sale.unitPrice.toInt().toString(),
             'department': sale.department?.toString() ?? '1',
           };
           if (sale.idVat != null) {
-            commonSale['idVat'] = sale.idVat?.toString() ?? '17';
+            commonSale['idVat'] = sale.idVat?.toString() ?? '22';
           }
           // sale or return
           if (sale.type == ItemType.HOLD) {
@@ -253,7 +253,7 @@ class CustomXmlHttpClient extends BaseCustomClient {
                 final recItemAdjustment = <String, String>{
                   'description': operation.description ?? '',
                   'department': operation.department?.toString() ?? '1',
-                  'amount': operation.amount.toString(),
+                  'amount': operation.amount.toInt().toString(),
                   // only values 2 or 3 are allowed
                   'adjustmentType':
                       [2, 3].contains(operation.adjustmentType.value)
@@ -262,7 +262,7 @@ class CustomXmlHttpClient extends BaseCustomClient {
                 };
                 if (operation.idVat != null) {
                   recItemAdjustment['idVat'] =
-                      operation.idVat?.toString() ?? '17';
+                      operation.idVat?.toString() ?? '22';
                 }
 
                 xmlBuilder.element('printRecItemAdjustment',
@@ -292,7 +292,7 @@ class CustomXmlHttpClient extends BaseCustomClient {
               'department': refund.department?.toString() ?? '1',
             };
             if (refund.idVat != null) {
-              (recRefund['idVat'] = refund.idVat?.toString() ?? '17');
+              (recRefund['idVat'] = refund.idVat?.toString() ?? '22');
             }
             xmlBuilder.element('printRecRefund', attributes: recRefund);
           } else if (refund.type == ItemType.CANCEL) {
@@ -328,7 +328,7 @@ class CustomXmlHttpClient extends BaseCustomClient {
                 };
                 if (operation.idVat != null) {
                   recSubtotalAdjustment['idVat'] =
-                      operation.idVat?.toString() ?? '17';
+                      operation.idVat?.toString() ?? '22';
                 }
                 xmlBuilder.element('printRecSubtotalAdjustment',
                     attributes: recSubtotalAdjustment);
