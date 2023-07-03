@@ -72,7 +72,7 @@ class CustomXmlHttpClient extends BaseCustomClient {
     final parser = Xml2Json();
     // parse to object
     parser.parse(xmlStr);
-    final jsonStr = parser.toBadgerfish();
+    final jsonStr = parser.toParkerWithAttrs();
     final xmlObj = jsonDecode(jsonStr);
     Map? response;
     if (xmlObj != null && xmlObj.isNotEmpty) {
