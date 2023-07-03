@@ -61,7 +61,7 @@ class Sale {
   List<Operation>? operations;
   String? description;
   int quantity;
-  double unitPrice;
+  num unitPrice;
   int? department;
   int? idVat;
 
@@ -88,7 +88,7 @@ class Sale {
 class CommonSale {
   String? description;
   int quantity;
-  double unitPrice;
+  num unitPrice;
   int? department;
   int? idVat;
 
@@ -226,7 +226,7 @@ class Payment {
 
 class Operation {
   AdjustmentType adjustmentType;
-  double amount;
+  num amount;
   String? description;
   int? department;
   int? idVat;

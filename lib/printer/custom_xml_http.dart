@@ -351,7 +351,7 @@ class CustomXmlHttpClient extends BaseCustomClient {
           xmlBuilder.element('printRecTotal', attributes: {
             'description': payment.description ?? '',
             'payment': payment.payment?.toString() ?? '0',
-            'paymentType': payment.paymentType?.toString() ?? '0',
+            'paymentType': payment.paymentType?.name ?? '0',
           });
         }
       }
