@@ -36,13 +36,16 @@ enum SubtotalOpt {
 }
 
 enum PaymentType {
-  CASH,
-  CHEQUE,
-  CREDIT_OR_CREDIT_CARD,
-  TICKET,
+  CASH('1'),
+  CHEQUE('1'),
+  CREDIT_OR_CREDIT_CARD('3'),
+  TICKET('5'),
   MULTI_TICKET,
   NOT_PAID,
-  PAYMENT_DISCOUNT,
+  PAYMENT_DISCOUNT;
+
+  final String? code;
+  const PaymentType([this.code]);
 }
 
 enum CommandCode {
