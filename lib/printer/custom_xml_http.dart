@@ -171,17 +171,19 @@ class CustomXmlHttpClient extends BaseCustomClient {
         if (cancel.cancelRecItems != null &&
             cancel.cancelRecItems!.isNotEmpty) {
           for (var recItem in cancel.cancelRecItems!) {
-            xmlBuilder.element('printRecItem', attributes: {
-              'description': recItem.description ?? '',
-              'quantity': recItem.quantity.toString(),
-              'unitPrice': recItem.unitPrice.toInt().toString(),
-              'department': recItem.department?.toString() ?? '1',
-            });
+            xmlBuilder.element('printRecItem',
+                attributes: {
+                  'description': recItem.description ?? '',
+                  'quantity': recItem.quantity.toString(),
+                  'unitPrice': recItem.unitPrice.toInt().toString(),
+                  'department': recItem.department?.toString() ?? '1',
+                },
+                isSelfClosing: false);
           }
         }
       }
       // end
-      xmlBuilder.element('endFiscalReceiptCut');
+      xmlBuilder.element('endFiscalReceiptCut', isSelfClosing: false);
     });
     return xmlBuilder.buildDocument();
   }
