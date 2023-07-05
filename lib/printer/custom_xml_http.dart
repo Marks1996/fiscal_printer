@@ -180,6 +180,8 @@ class CustomXmlHttpClient extends BaseCustomClient {
           }
         }
       }
+      // end
+      xmlBuilder.element('endFiscalReceiptCut');
     });
     return xmlBuilder.buildDocument();
   }
