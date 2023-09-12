@@ -56,6 +56,7 @@ class OpenDrawer {
 }
 
 class Receipt {
+  String? orderNo;
   String? operator;
   List<Sale>? sales;
   Lottery? lottery;
@@ -69,6 +70,7 @@ class Receipt {
   Message? personalTaxCode;
   Message? refundMessage;
   Receipt({
+    this.orderNo,
     this.operator,
     this.sales,
     this.lottery,
@@ -98,6 +100,7 @@ class Report {
 }
 
 class Cancel {
+  String? orderNo;
   CancelType type;
   String zRepNum;
   String docNum;
@@ -105,14 +108,15 @@ class Cancel {
   String fiscalNum;
   String operator;
 
-  Cancel(
-    this.type,
-    this.zRepNum,
-    this.docNum,
-    this.date,
-    this.fiscalNum,
-    this.operator,
-  );
+  Cancel({
+    required this.type,
+    required this.zRepNum,
+    required this.docNum,
+    required this.date,
+    required this.fiscalNum,
+    required this.operator,
+    this.orderNo,
+  });
 }
 
 // export type NonFiscal = {

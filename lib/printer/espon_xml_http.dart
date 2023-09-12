@@ -70,6 +70,15 @@ class EpsonXmlHttpClient extends BaseEpsonClient {
     /// init
     final xmlBuilder = XmlBuilder();
     xmlBuilder.element('printerFiscalReceipt', nest: () {
+      /// orderNo
+      if (receipt.orderNo != null) {
+        final attributes = {
+          'data': receipt.orderNo ?? '',
+          'operator': receipt.operator ?? '',
+        };
+        xmlBuilder.element('displayText', attributes: attributes);
+      }
+
       /// refund message
       if (receipt.refundMessage != null) {
         final message = receipt.refundMessage!.message ?? '',
@@ -439,6 +448,15 @@ class EpsonXmlHttpClient extends BaseEpsonClient {
   XmlDocumentFragment _convertCancelToXmlDoc(Cancel cancel) {
     final xmlBuilder = XmlBuilder();
     xmlBuilder.element('printerFiscalReceipt', nest: () {
+      /// orderNo
+      if (cancel.orderNo != null) {
+        final attributes = {
+          'data': cancel.orderNo ?? '',
+          'operator': cancel.operator,
+        };
+        xmlBuilder.element('displayText', attributes: attributes);
+      }
+
       xmlBuilder.element('printRecMessage', attributes: {
         'operator': cancel.operator,
         'messageType': '4',

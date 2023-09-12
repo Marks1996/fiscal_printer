@@ -333,6 +333,7 @@ class QrCode {
 }
 
 class Receipt {
+  String? orderNo;
   String? operator;
   List<Sale>? sales;
   Lottery? lottery;
@@ -347,6 +348,7 @@ class Receipt {
   DisplayText? beginDisplayText;
   DisplayText? endDisplayText;
   Receipt({
+    this.orderNo,
     this.operator,
     this.sales,
     this.lottery,
@@ -395,6 +397,7 @@ class Report {
 }
 
 class Cancel {
+  String? orderNo;
   String docRefZ;
   String docRefNumber;
   String docDate;
@@ -408,6 +411,7 @@ class Cancel {
     required this.docRefZ,
     required this.docRefNumber,
     required this.docDate,
+    this.orderNo,
     this.printPreview,
     this.fiscalSerial,
     this.checkOnly,

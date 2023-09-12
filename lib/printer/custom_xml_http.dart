@@ -162,6 +162,13 @@ class CustomXmlHttpClient extends BaseCustomClient {
       commonLabel['codLottery'] = cancel.codLottery!;
     }
     xmlBuilder.element('printerFiscalReceipt', nest: () {
+      /// orderNo
+      if (cancel.orderNo != null) {
+        final attributes = {
+          'data': cancel.orderNo ?? '',
+        };
+        xmlBuilder.element('displayText', attributes: attributes);
+      }
       // Return feasibility check
       if (cancel.checkOnly == EnableType.ABLE) {
         xmlBuilder.element('beginRtDocAnnulment', attributes: commonLabel);
@@ -223,6 +230,14 @@ class CustomXmlHttpClient extends BaseCustomClient {
     xmlBuilder.processing('xml', CustomXmlHttpClient._xmlHeader);
 
     xmlBuilder.element('printerFiscalReceipt', nest: () {
+      /// orderNo
+      if (receipt.orderNo != null) {
+        final attributes = {
+          'data': receipt.orderNo ?? '',
+          'operator': receipt.operator ?? '',
+        };
+        xmlBuilder.element('displayText', attributes: attributes);
+      }
       // begin
       xmlBuilder.element('beginFiscalReceipt');
 
