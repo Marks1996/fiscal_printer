@@ -90,7 +90,7 @@ class EpsonXmlHttpClient extends BaseEpsonClient {
       /// orderNo
       if (receipt.orderNo != null) {
         final attributes = {
-          'message': 'Rec. N.:${receipt.orderNo ?? ''}',
+          'message': 'N.:${receipt.orderNo ?? ''}',
           'messageType': MessageType.ADDITIONAL_DESC.value.toString(),
           'operator': receipt.operator ?? '',
         };

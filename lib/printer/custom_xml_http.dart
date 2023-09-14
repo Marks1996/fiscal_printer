@@ -247,7 +247,7 @@ class CustomXmlHttpClient extends BaseCustomClient {
         /// orderNo
         if (receipt.orderNo != null) {
           final attributes = {
-            'message': 'Rec. N.:${receipt.orderNo ?? ''}',
+            'message': 'N.:${receipt.orderNo ?? ''}',
             'messageType': '4',
             'font': '1',
           };
