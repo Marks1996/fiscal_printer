@@ -230,17 +230,18 @@ class CustomXmlHttpClient extends BaseCustomClient {
     xmlBuilder.processing('xml', CustomXmlHttpClient._xmlHeader);
 
     xmlBuilder.element('printerFiscalReceipt', nest: () {
-      /// orderNo
-      if (receipt.orderNo != null) {
-        final attributes = {
-          'data': receipt.orderNo ?? '',
-          'operator': receipt.operator ?? '',
-        };
-        xmlBuilder.element('displayText', attributes: attributes);
-      }
       // begin
       xmlBuilder.element('beginFiscalReceipt');
 
+      /// orderNo
+      if (receipt.orderNo != null) {
+        final attributes = {
+          'message': receipt.orderNo ?? '',
+          'messageType': '4',
+          'font': '1',
+        };
+        xmlBuilder.element('printRecMessage', attributes: attributes);
+      }
       if (receipt.beginDisplayText != null) {
         xmlBuilder.element('displayText',
             attributes: {'data': receipt.beginDisplayText?.data ?? ''});
