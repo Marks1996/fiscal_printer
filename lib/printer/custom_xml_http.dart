@@ -230,15 +230,6 @@ class CustomXmlHttpClient extends BaseCustomClient {
     xmlBuilder.processing('xml', CustomXmlHttpClient._xmlHeader);
 
     xmlBuilder.element('printerFiscalReceipt', nest: () {
-      /// orderNo
-      if (receipt.orderNo != null) {
-        final attributes = {
-          'message': 'Rec. N.:${receipt.orderNo ?? ''}',
-          'messageType': '1',
-          'font': '1',
-        };
-        xmlBuilder.element('printRecMessage', attributes: attributes);
-      }
       // begin
       xmlBuilder.element('beginFiscalReceipt');
 
@@ -253,6 +244,15 @@ class CustomXmlHttpClient extends BaseCustomClient {
       }
       // sales item
       if (receipt.sales != null && receipt.sales!.isNotEmpty) {
+        /// orderNo
+        if (receipt.orderNo != null) {
+          final attributes = {
+            'message': 'Rec. N.:${receipt.orderNo ?? ''}',
+            'messageType': '4',
+            'font': '1',
+          };
+          xmlBuilder.element('printRecMessage', attributes: attributes);
+        }
         for (final Sale sale in receipt.sales!) {
           final commonSale = <String, String>{
             'description': sale.description ?? '',
