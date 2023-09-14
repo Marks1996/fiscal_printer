@@ -83,19 +83,19 @@ class EpsonXmlHttpClient extends BaseEpsonClient {
         xmlBuilder.element('printRecMessage', attributes: attributes);
       }
 
-      /// begin
-      xmlBuilder.element('beginFiscalReceipt',
-          attributes: {'operator': receipt.operator ?? '1'});
-
       /// orderNo
       if (receipt.orderNo != null) {
         final attributes = {
-          'message': receipt.orderNo ?? '',
-          'messageType': MessageType.ADDITIONAL_DESC.value.toString(),
+          'message': 'Rec. N.:${receipt.orderNo ?? ''}',
+          'messageType': MessageType.ADDITIONAL_HEADER.value.toString(),
           'operator': receipt.operator ?? '',
         };
         xmlBuilder.element('printRecMessage', attributes: attributes);
       }
+
+      /// begin
+      xmlBuilder.element('beginFiscalReceipt',
+          attributes: {'operator': receipt.operator ?? '1'});
 
       /// sales
       if (receipt.sales != null && receipt.sales!.isNotEmpty) {
