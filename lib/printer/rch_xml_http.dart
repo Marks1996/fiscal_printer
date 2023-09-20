@@ -27,8 +27,6 @@ class RchXmlHttpClient extends BaseRchClient {
   // *********************
 
   /// send to the printer server
-  /// @param xmlDoc
-  /// @returns
   Future<Response> send(XmlDocumentFragment xmlDoc) async {
     // build the printer server url based on config
     final config = getConfig();
@@ -63,9 +61,6 @@ class RchXmlHttpClient extends BaseRchClient {
   ///           ...
   ///       </cmd>
   ///  </Service>
-  ///  @param xmlDoc
-  ///  @returns
-  /// /
   String _parseRequest(XmlDocumentFragment xmlDoc) {
     final reqXmlStr = xmlDoc.toXmlString(pretty: true);
     return reqXmlStr;
@@ -110,17 +105,17 @@ class RchXmlHttpClient extends BaseRchClient {
   /// Converters
   /// *********************
 
-  ///  convert `RCHProtocol.Command` to the object that printer server supports.
+  ///  convert `commands` to the object that printer server supports.
   ///  commands
   XmlDocumentFragment _convertCommandToXmlDoc(List<String> commands) {
     final xmlBuilder = XmlBuilder();
     xmlBuilder.processing('xml', 'version="1.0" encoding="utf-8"');
     xmlBuilder.element(xmlRoot, nest: () {
-      xmlBuilder.element(xmlBody, nest: () {
-        for (final command in commands) {
+      for (final command in commands) {
+        xmlBuilder.element(xmlBody, nest: () {
           xmlBuilder.text(command);
-        }
-      });
+        });
+      }
     });
     return xmlBuilder.buildFragment();
   }
