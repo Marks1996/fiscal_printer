@@ -14,6 +14,12 @@ class Response {
     this.body,
     this.original,
   });
+
+  toJson() => {
+        'ok': ok,
+        'body': body,
+        'original': original?.toJson(),
+      };
 }
 
 class Original {
@@ -23,4 +29,9 @@ class Original {
     this.res,
     this.req,
   });
+
+  toJson() => {
+        'res': res,
+        'req': req,
+      };
 }
