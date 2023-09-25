@@ -41,8 +41,8 @@ class RchXmlHttpClient extends BaseRchClient {
     // add connecttime 30s
     final options = BaseOptions(
       headers: headers,
-      connectTimeout: const Duration(seconds: 30),
-      receiveTimeout: const Duration(seconds: 30),
+      connectTimeout: 30000,
+      receiveTimeout: 30000,
     );
 
     final res = await Dio(options).post(url, data: xmlStr);
