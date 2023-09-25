@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:dio/dio.dart' hide Response;
+import 'package:fiscal_printer/common/http.dart';
 
 import 'package:xml/xml.dart';
 import 'package:xml2json/xml2json.dart';
@@ -103,17 +103,12 @@ class CustomXmlHttpClient extends BaseCustomClient {
       'Content-Type': 'text/xml;charset=utf-8',
       'authorization': authorization,
     };
-    final res =
-        await Dio(BaseOptions(headers: headers)).post(url, data: xmlStr);
-    final data = res.data;
+    final res = await HttpUtils().post(url, xmlStr, headers: headers);
+    // final data = res.data;
+    final data = res;
     final resXmlStr = data;
     final response = parseResponse(data, isGetInfo);
-    final req = res.requestOptions;
-    response.request = {
-      'path': req.path,
-      'data': req.data,
-      'headers': req.headers,
-    };
+
     response.original = Original(
       req: xmlStr,
       res: resXmlStr,

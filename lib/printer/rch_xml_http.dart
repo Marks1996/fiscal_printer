@@ -1,6 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 
-import 'package:dio/dio.dart' hide Response;
+import 'package:fiscal_printer/common/http.dart';
 import 'package:fiscal_printer/common/rch_client.dart';
 import 'package:xml/xml.dart';
 import 'package:xml2json/xml2json.dart';
@@ -39,16 +40,9 @@ class RchXmlHttpClient extends BaseRchClient {
       'Content-Type': 'application/xml',
     };
     // add connecttime 30s
-    final options = BaseOptions(
-      headers: headers,
-      connectTimeout: 30000,
-      receiveTimeout: 30000,
-    );
-
-    final res = await Dio(options).post(url, data: xmlStr);
-
+    final res = await HttpUtils().post(url, xmlStr, headers: headers);
     // add header
-    final resXmlStr = res.data;
+    final resXmlStr = res;
 
     final response = await _parseResponse(resXmlStr);
     response.original = Original(req: xmlStr, res: resXmlStr);
