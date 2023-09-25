@@ -36,9 +36,14 @@ class RchXmlHttpClient extends BaseRchClient {
 
     /// send
     final headers = {
-      'Content-Type': 'text/xml;charset=utf-8',
+      'Content-Type': 'application/xml',
     };
-    final options = BaseOptions(headers: headers);
+    // add connecttime 30s
+    final options = BaseOptions(
+      headers: headers,
+      connectTimeout: Duration(seconds: 30),
+      receiveTimeout: Duration(seconds: 30),
+    );
 
     final res = await Dio(options).post(url, data: xmlStr);
 
