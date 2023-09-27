@@ -1,7 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
-
-import 'package:fiscal_printer/common/http.dart';
+import 'package:http/http.dart' as http;
 import 'package:fiscal_printer/common/rch_client.dart';
 import 'package:xml/xml.dart';
 import 'package:xml2json/xml2json.dart';
@@ -39,14 +37,26 @@ class RchXmlHttpClient extends BaseRchClient {
     final headers = {
       'Content-Type': 'application/xml',
     };
-    // add connecttime 30s
-    final res = await HttpUtils().post(url, xmlStr, headers: headers);
-    // add header
-    final resXmlStr = res;
+    try {
+      // add connecttime 30s
+      final res =
+          await http.post(Uri.parse(url), body: xmlStr, headers: headers);
+      // add header
+      final resXmlStr = res.body;
 
-    final response = await _parseResponse(resXmlStr);
-    response.original = Original(req: xmlStr, res: resXmlStr);
-    return response;
+      final response = await _parseResponse(resXmlStr);
+      response.original = Original(req: xmlStr, res: resXmlStr);
+      return response;
+    } catch (e) {
+      return Response(
+        ok: false,
+        body: e,
+        original: Original(
+          req: xmlStr,
+          res: null,
+        ),
+      );
+    }
   }
 
   // *********************

@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:fiscal_printer/common/http.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:xml/xml.dart';
 import 'package:xml2json/xml2json.dart';
@@ -103,17 +103,26 @@ class CustomXmlHttpClient extends BaseCustomClient {
       'Content-Type': 'text/xml;charset=utf-8',
       'authorization': authorization,
     };
-    final res = await HttpUtils().post(url, xmlStr, headers: headers);
-    // final data = res.data;
-    final data = res;
-    final resXmlStr = data;
-    final response = parseResponse(data, isGetInfo);
+    try {
+      final res =
+          await http.post(Uri.parse(url), body: xmlStr, headers: headers);
+      // final data = res.data;
+      final data = res.body;
+      final resXmlStr = data;
+      final response = parseResponse(data, isGetInfo);
 
-    response.original = Original(
-      req: xmlStr,
-      res: resXmlStr,
-    );
-    return response;
+      response.original = Original(
+        req: xmlStr,
+        res: resXmlStr,
+      );
+      return response;
+    } catch (e) {
+      return Response(
+        ok: false,
+        body: e,
+        original: Original(req: xmlStr, res: null),
+      );
+    }
   }
 
   /// convert [Command] to the object that printer server supports.
