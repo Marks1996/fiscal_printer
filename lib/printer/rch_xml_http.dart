@@ -26,7 +26,7 @@ class RchXmlHttpClient extends BaseRchClient {
   // *********************
 
   /// send to the printer server
-  Future<Response> send(XmlDocumentFragment xmlDoc) async {
+  Future<Response> send(XmlDocument xmlDoc) async {
     // build the printer server url based on config
     final config = getConfig();
     final url = 'http://${config.host}/service.cgi';
@@ -70,7 +70,7 @@ class RchXmlHttpClient extends BaseRchClient {
   ///           ...
   ///       </cmd>
   ///  </Service>
-  String _parseRequest(XmlDocumentFragment xmlDoc) {
+  String _parseRequest(XmlDocument xmlDoc) {
     final reqXmlStr = xmlDoc.toXmlString(pretty: true);
     return reqXmlStr;
   }
@@ -116,7 +116,7 @@ class RchXmlHttpClient extends BaseRchClient {
 
   ///  convert `commands` to the object that printer server supports.
   ///  commands
-  XmlDocumentFragment _convertCommandToXmlDoc(List<String> commands) {
+  XmlDocument _convertCommandToXmlDoc(List<String> commands) {
     final xmlBuilder = XmlBuilder();
     xmlBuilder.processing('xml', 'version="1.0" encoding="utf-8"');
     xmlBuilder.element(xmlRoot, nest: () {
@@ -126,6 +126,6 @@ class RchXmlHttpClient extends BaseRchClient {
         });
       }
     });
-    return xmlBuilder.buildFragment();
+    return xmlBuilder.buildDocument();
   }
 }
