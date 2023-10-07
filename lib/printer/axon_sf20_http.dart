@@ -13,7 +13,7 @@ class AxonSf20HttpClient extends BaseAxonClient {
   @override
   Future<Response> dispWrite(String ln1, String ln2) async {
     return await _send('_io', params: {
-      'cmd': 1,
+      'cmd': '1',
       'ln1': ln1,
       'ln2': ln2,
     });
@@ -22,19 +22,19 @@ class AxonSf20HttpClient extends BaseAxonClient {
   /// 发送键盘代码
   @override
   Future<Response> keybWrite(String code) async {
-    return await _send('_io', params: {'cmd': 2, 'code': code});
+    return await _send('_io', params: {'cmd': '2', 'code': code});
   }
 
   /// 发送功能键
   @override
   Future<Response> operWrite(String code, String idx) async {
-    return await _send('_io', params: {'cmd': 3, 'code': code, 'idx': idx});
+    return await _send('_io', params: {'cmd': '3', 'code': code, 'idx': idx});
   }
 
   /// 发送 SF20 协议命令
   @override
   Future<Response> protoCmd(int js, String pkt) async {
-    return await _send('_io', params: {'cmd': 4, 'js': js, 'pkt': pkt});
+    return await _send('_io', params: {'cmd': '4', 'js': js, 'pkt': pkt});
   }
 
   ///加载多个 SF20 协议命令，以便后续打印。
@@ -43,7 +43,7 @@ class AxonSf20HttpClient extends BaseAxonClient {
     return await _send(
       '_fileio',
       params: {
-        'cmd': 3,
+        'cmd': '3',
       },
       method: 'POST',
       cmd: cmd,
@@ -53,13 +53,13 @@ class AxonSf20HttpClient extends BaseAxonClient {
   /// 获取有关税务登记状态的信息
   @override
   Future<Response> status() async {
-    return await _send('_io', params: {'cmd': 0});
+    return await _send('_io', params: {'cmd': '0'});
   }
 
   /// 执行之前用 SEND_TICKET_CMD 加载的命令序列
   @override
   Future<Response> ticketCmd(int js) async {
-    return await _send('_io', params: {'cmd': 5, 'js': js});
+    return await _send('_io', params: {'cmd': '5', 'js': js});
   }
 
   /// Send CMD
