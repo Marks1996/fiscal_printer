@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fiscal_printer/common/axon_client.dart';
 import 'package:fiscal_printer/common/axon_model.dart';
 import 'package:http/http.dart' as http;
@@ -74,20 +72,31 @@ class AxonSf20HttpClient extends BaseAxonClient {
     final url = Uri.http(config.host, path, params);
 
     try {
+      final Response response = Response(
+        ok: true,
+      );
       final headers = {
         'Content-Type': 'text/plain',
       };
-      final res = method == "POS"
-          ? await http.post(url, body: cmd, headers: headers)
-          : await http.get(url, headers: headers);
-      final data = res.body;
-      final resData = jsonDecode(data);
-      final Response response = Response();
-      response.original = Original(
-        req: [params, cmd],
-        res: resData,
-      );
-      return response;
+
+      http.Response res;
+      if (method == "POST") {
+        res = await http.post(url, body: cmd, headers: headers);
+        response.body = res.body;
+        response.original = Original(
+          req: [params, cmd],
+          res: res.body,
+        );
+        return response;
+      } else {
+        res = await http.get(url, headers: headers);
+        response.body = res.body;
+        response.original = Original(
+          req: [params, cmd],
+          res: res.body,
+        );
+        return response;
+      }
     } catch (e) {
       return Response(
         ok: false,
