@@ -75,7 +75,7 @@ class AxonSf20HttpClient extends BaseAxonClient {
 
     try {
       final headers = {
-        'Content-Type': 'application/json',
+        'Content-Type': 'text/plain',
       };
       final res = method == "POS"
           ? await http.post(url, body: cmd, headers: headers)
