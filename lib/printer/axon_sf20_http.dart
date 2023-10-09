@@ -10,68 +10,68 @@ class AxonSf20HttpClient extends BaseAxonClient {
   /// [ln2] 第二行
   @override
   Future<Response> dispWrite(String ln1, String ln2) async {
-    return await _send('_io', params: {
-      'cmd': '1',
-      'ln1': ln1,
-      'ln2': ln2,
-    });
+    final config = getConfig();
+    final url =
+        Uri.parse('http://${config.host}/_io?cmd=1&ln1=${ln1}&ln2=${ln2}');
+    return await _send(url);
   }
 
   /// 发送键盘代码
   @override
   Future<Response> keybWrite(String code) async {
-    return await _send('_io', params: {'cmd': '2', 'code': code});
+    final config = getConfig();
+    final url = Uri.http(config.host, '_io', {'cmd': '2', 'code': code});
+    return await _send(url);
   }
 
   /// 发送功能键
   @override
   Future<Response> operWrite(String code, String idx) async {
-    return await _send('_io', params: {'cmd': '3', 'code': code, 'idx': idx});
+    final config = getConfig();
+    final url =
+        Uri.http(config.host, '_io', {'cmd': '3', 'code': code, 'idx': idx});
+    return await _send(url);
   }
 
   /// 发送 SF20 协议命令
   @override
   Future<Response> protoCmd(int js, String pkt) async {
-    return await _send('_io',
-        params: {'cmd': '4', 'js': js.toString(), 'pkt': pkt});
+    final config = getConfig();
+    final url = Uri.http(
+        config.host, '_io', {'cmd': '4', 'js': js.toString(), 'pkt': pkt});
+    return await _send(url);
   }
 
   ///加载多个 SF20 协议命令，以便后续打印。
   @override
   Future<Response> snedTicketCmd(String cmd) async {
-    return await _send(
-      '_fileio',
-      params: {
-        'cmd': '3',
-      },
-      method: 'POST',
-      cmd: cmd,
-    );
+    final config = getConfig();
+    final url = Uri.http(config.host, '_fileio', {'cmd': '3'});
+    return await _send(url, method: 'POST', cmd: cmd);
   }
 
   /// 获取有关税务登记状态的信息
   @override
   Future<Response> status() async {
-    return await _send('_io', params: {'cmd': '0'});
+    final config = getConfig();
+    final url = Uri.http(config.host, '_io', {'cmd': '0'});
+    return await _send(url);
   }
 
   /// 执行之前用 SEND_TICKET_CMD 加载的命令序列
   @override
   Future<Response> ticketCmd(int js) async {
-    return await _send('_io', params: {'cmd': '5', 'js': js.toString()});
+    final config = getConfig();
+    final url = Uri.http(config.host, '_io', {'cmd': '5', 'js': js.toString()});
+    return await _send(url);
   }
 
   /// Send CMD
   Future<Response> _send(
-    String path, {
+    Uri url, {
     String method = 'GET',
-    Map<String, dynamic>? params,
     String? cmd,
   }) async {
-    // build the printer server url based on config
-    final config = getConfig();
-    final url = Uri.http(config.host, path, params);
-
     try {
       final Response response = Response(
         ok: true,
@@ -85,7 +85,7 @@ class AxonSf20HttpClient extends BaseAxonClient {
             await http.post(url, body: cmd, headers: headers);
         response.ok = res.statusCode == 200;
         response.original = Original(
-          req: [params, cmd],
+          req: cmd,
           res: res.request?.url,
         );
         return response;
@@ -93,7 +93,7 @@ class AxonSf20HttpClient extends BaseAxonClient {
         http.Response res = await http.get(url, headers: headers);
         response.body = res.body;
         response.original = Original(
-          req: [params, cmd],
+          req: url,
           res: res.body,
         );
         return response;
@@ -102,7 +102,7 @@ class AxonSf20HttpClient extends BaseAxonClient {
       return Response(
         ok: false,
         body: e,
-        original: Original(req: [params, cmd], res: null),
+        original: Original(req: url, res: null),
       );
     }
   }
