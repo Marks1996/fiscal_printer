@@ -78,16 +78,16 @@ class AxonSf20HttpClient extends BaseAxonClient {
       final Response response = Response(
         ok: true,
       );
-      final headers = {
-        'Content-Type': 'text/plain',
-        'Content-Length': '${cmd?.length ?? -1}'
-      };
-      final options = BaseOptions()
-        ..headers.addAll(headers)
-        ..method = method;
-      final http = Dio(options);
-
-      final res = await http.request(url.toString(), data: cmd);
+      final headers = {'Content-Type': 'text/plain'};
+      final http = Dio();
+      final res = await http.request(
+        url.toString(),
+        data: cmd,
+        options: Options(
+          method: method,
+          headers: headers,
+        ),
+      );
       response.body = res.data;
       response.original = Original(
         req: {
