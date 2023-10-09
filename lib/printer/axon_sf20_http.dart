@@ -81,12 +81,12 @@ class AxonSf20HttpClient extends BaseAxonClient {
       };
 
       if (method == "POST") {
-        http.BaseResponse res =
+        http.Response res =
             await http.post(url, body: cmd, headers: headers);
-        response.ok = res.statusCode == 200;
+        response.body = '${res.reasonPhrase}:${res.statusCode}';
         response.original = Original(
-          req: cmd,
-          res: res.request?.url,
+          req: res.request?.url,
+          res: null,
         );
         return response;
       } else {
