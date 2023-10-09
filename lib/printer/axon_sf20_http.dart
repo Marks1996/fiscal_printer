@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:fiscal_printer/common/axon_client.dart';
@@ -74,11 +75,15 @@ class AxonSf20HttpClient extends BaseAxonClient {
     String method = 'GET',
     String? cmd,
   }) async {
+    final Response response = Response(
+      ok: true,
+    );
+    var headers = {'Content-Type': 'text/plain'};
+    if (cmd != null) {
+      headers[HttpHeaders.contentLengthHeader] =
+          utf8.encode(cmd).length.toString();
+    }
     try {
-      final Response response = Response(
-        ok: true,
-      );
-      final headers = {'Content-Type': 'text/plain'};
       final http = Dio();
       final res = await http.request(
         url.toString(),
@@ -122,7 +127,7 @@ class AxonSf20HttpClient extends BaseAxonClient {
       return Response(
         ok: false,
         body: e,
-        original: Original(req: url, res: null),
+        original: Original(req: headers, res: null),
       );
     }
   }
