@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fiscal_printer/common/axon_client.dart';
 import 'package:fiscal_printer/common/axon_model.dart';
 import 'package:dio/dio.dart' hide Response;
@@ -79,15 +81,19 @@ class AxonSf20HttpClient extends BaseAxonClient {
       final headers = {
         'Content-Type': 'text/plain',
       };
-      final options = BaseOptions();
-      options.headers.addAll(headers);
+      final options = BaseOptions()..headers.addAll(headers);
       final http = Dio(options);
 
       if (method == "POST") {
-        final res = await http.post(url.toString(), data: cmd);
+        final res = await http.post(
+          url.toString(),
+          data: cmd,
+          options: Options()
+            ..headers?.addAll({'content-length': '${cmd!.length}'}),
+        );
         response.body = '${res.statusCode}:${res.statusMessage}';
         response.original = Original(
-          req: res.realUri.toString(),
+          req: res.requestOptions.toString(),
           res: res.data,
         );
         return response;
