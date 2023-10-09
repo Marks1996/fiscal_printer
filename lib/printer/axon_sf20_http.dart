@@ -80,32 +80,44 @@ class AxonSf20HttpClient extends BaseAxonClient {
       );
       final headers = {
         'Content-Type': 'text/plain',
+        'Content-Length': '${cmd?.length ?? -1}'
       };
-      final options = BaseOptions()..headers.addAll(headers);
+      final options = BaseOptions()
+        ..headers.addAll(headers)
+        ..method = method;
       final http = Dio(options);
 
-      if (method == "POST") {
-        final res = await http.post(
-          url.toString(),
-          data: cmd,
-          options: Options()
-            ..headers?.addAll({'content-length': '${cmd!.length}'}),
-        );
-        response.body = '${res.statusCode}:${res.statusMessage}';
-        response.original = Original(
-          req: res.requestOptions.toString(),
-          res: res.data,
-        );
-        return response;
-      } else {
-        final res = await http.get(url.toString());
-        response.body = res.data;
-        response.original = Original(
-          req: url,
-          res: res.data,
-        );
-        return response;
-      }
+      final res = await http.request(url.toString(), data: cmd);
+      response.body = res.data;
+      response.original = Original(
+        req: {
+          'url': res.realUri,
+          'headers': res.requestOptions.headers,
+          'data': res.requestOptions.data,
+        },
+        res: res.data,
+      );
+      return response;
+      // if (method == "POST") {
+      //   final res = await http.post(
+      //     url.toString(),
+      //     data: cmd,
+      //   );
+      //   response.body = '${res.statusCode}:${res.statusMessage}';
+      //   response.original = Original(
+      //     req: res.requestOptions.toString(),
+      //     res: res.data,
+      //   );
+      //   return response;
+      // } else {
+      //   final res = await http.get(url.toString());
+      //   response.body = res.data;
+      //   response.original = Original(
+      //     req: url,
+      //     res: res.data,
+      //   );
+      //   return response;
+      // }
     } catch (e) {
       return Response(
         ok: false,
