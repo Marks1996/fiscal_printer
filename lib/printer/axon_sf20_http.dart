@@ -81,8 +81,12 @@ class AxonSf20HttpClient extends BaseAxonClient {
       };
 
       if (method == "POST") {
-        http.Response res =
-            await http.post(url, body: cmd, headers: headers);
+        if (cmd != null) {
+          headers.addAll({
+            'Content-Length': '${cmd.codeUnits.length}',
+          });
+        }
+        http.Response res = await http.post(url, body: cmd, headers: headers);
         response.body = '${res.reasonPhrase}:${res.statusCode}';
         response.original = Original(
           req: res.request?.url,
