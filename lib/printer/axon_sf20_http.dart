@@ -32,7 +32,8 @@ class AxonSf20HttpClient extends BaseAxonClient {
   /// 发送 SF20 协议命令
   @override
   Future<Response> protoCmd(int js, String pkt) async {
-    return await _send('_io', params: {'cmd': '4', 'js': js, 'pkt': pkt});
+    return await _send('_io',
+        params: {'cmd': '4', 'js': js.toString(), 'pkt': pkt});
   }
 
   ///加载多个 SF20 协议命令，以便后续打印。
@@ -57,7 +58,7 @@ class AxonSf20HttpClient extends BaseAxonClient {
   /// 执行之前用 SEND_TICKET_CMD 加载的命令序列
   @override
   Future<Response> ticketCmd(int js) async {
-    return await _send('_io', params: {'cmd': '5', 'js': js});
+    return await _send('_io', params: {'cmd': '5', 'js': js.toString()});
   }
 
   /// Send CMD
@@ -79,17 +80,17 @@ class AxonSf20HttpClient extends BaseAxonClient {
         'Content-Type': 'text/plain',
       };
 
-      http.Response res;
       if (method == "POST") {
-        res = await http.post(url, body: cmd, headers: headers);
-        response.body = res.body;
+        http.BaseResponse res =
+            await http.post(url, body: cmd, headers: headers);
+        response.ok = res.statusCode == 200;
         response.original = Original(
           req: [params, cmd],
-          res: res.body,
+          res: res.request?.url,
         );
         return response;
       } else {
-        res = await http.get(url, headers: headers);
+        http.Response res = await http.get(url, headers: headers);
         response.body = res.body;
         response.original = Original(
           req: [params, cmd],
