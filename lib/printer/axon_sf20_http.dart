@@ -1,6 +1,6 @@
 import 'package:fiscal_printer/common/axon_client.dart';
 import 'package:fiscal_printer/common/axon_model.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart' hide Response;
 
 class AxonSf20HttpClient extends BaseAxonClient {
   AxonSf20HttpClient(super.config);
@@ -79,26 +79,24 @@ class AxonSf20HttpClient extends BaseAxonClient {
       final headers = {
         'Content-Type': 'text/plain',
       };
+      final options = BaseOptions();
+      options.headers.addAll(headers);
+      final http = Dio(options);
 
       if (method == "POST") {
-        if (cmd != null) {
-          headers.addAll({
-            'Content-Length': '${cmd.codeUnits.length}',
-          });
-        }
-        http.Response res = await http.post(url, body: cmd, headers: headers);
-        response.body = '${res.reasonPhrase}:${res.statusCode}';
+        final res = await http.post(url.toString(), data: cmd);
+        response.body = '${res.statusCode}:${res.statusMessage}';
         response.original = Original(
-          req: res.request?.url,
-          res: null,
+          req: res.realUri.toString(),
+          res: res.data,
         );
         return response;
       } else {
-        http.Response res = await http.get(url, headers: headers);
-        response.body = res.body;
+        final res = await http.get(url.toString());
+        response.body = res.data;
         response.original = Original(
           req: url,
-          res: res.body,
+          res: res.data,
         );
         return response;
       }

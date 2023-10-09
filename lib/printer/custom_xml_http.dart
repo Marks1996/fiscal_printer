@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart' hide Response;
 
 import 'package:xml/xml.dart';
 import 'package:xml2json/xml2json.dart';
@@ -103,11 +103,15 @@ class CustomXmlHttpClient extends BaseCustomClient {
       'Content-Type': 'text/xml;charset=utf-8',
       'authorization': authorization,
     };
+    final options = BaseOptions()..headers.addAll(headers);
+    final http = Dio(options);
     try {
-      final res =
-          await http.post(Uri.parse(url), body: xmlStr, headers: headers);
+      final res = await http.post(
+        url,
+        data: xmlStr,
+      );
       // final data = res.data;
-      final data = res.body;
+      final data = res.data;
       final resXmlStr = data;
       final response = parseResponse(data, isGetInfo);
 
