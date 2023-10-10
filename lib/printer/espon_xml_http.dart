@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:dio/dio.dart' hide Response;
+import 'dart:io';
 import 'package:fiscal_printer/common/epson_model.dart';
 import 'package:xml/xml.dart';
 import 'package:xml2json/xml2json.dart';
@@ -403,17 +403,21 @@ class EpsonXmlHttpClient extends BaseEpsonClient {
   Future<Response> send(XmlDocumentFragment xmlDoc) async {
     /// build the printer server url based on config
     final config = getConfig();
-
-    var url = 'http://${config.host}/cgi-bin/fpmate.cgi';
+    final queryParameters = <String, String>{};
+    // 'http://${config.host}/cgi-bin/fpmate.cgi';
     // var url = '${config.host}';
-    var prefix = '?';
+    // var prefix = '?';
     if (config.deviceId != null) {
-      url += '${prefix}devid=${config.deviceId}';
-      prefix = '&';
+      // url += '${prefix}devid=${config.deviceId}';
+      // prefix = '&';
+      queryParameters['devid'] = config.deviceId;
     }
     if (config.timeout != null && config.timeout > 0) {
-      url += '${prefix}timeout=${config.timeout}';
+      // url += '${prefix}timeout=${config.timeout}';
+      queryParameters['timeout'] = config.timeout;
     }
+
+    var url = Uri.http(config.host, 'cgi-bin/fpmate.cgi');
 
     /// build xml string
     final xmlStr = parseRequest(xmlDoc);
@@ -422,19 +426,25 @@ class EpsonXmlHttpClient extends BaseEpsonClient {
     final headers = {
       'Content-Type': 'text/xml;charset=utf-8',
     };
-    final options = BaseOptions()..headers.addAll(headers);
-    final http = Dio(options);
+
     try {
-      final res = await http.post(url, data: xmlStr);
+      final http = HttpClient();
+      final request = await http.postUrl(url);
+      headers.forEach((key, value) {
+        request.headers.set(key, value, preserveHeaderCase: true);
+      });
+      request.write(xmlStr);
+      final response = await request.close();
+      final data = await response.transform(utf8.decoder).join();
 
       // add header
-      final resXmlStr = res.data;
-      final response = parseResponse(resXmlStr);
-      response.original = Original(
+      final resXmlStr = data;
+      final result = parseResponse(resXmlStr);
+      result.original = Original(
         req: xmlStr,
         res: resXmlStr,
       );
-      return response;
+      return result;
     } catch (e) {
       return Response(
         ok: false,

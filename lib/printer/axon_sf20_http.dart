@@ -1,6 +1,8 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:fiscal_printer/common/axon_client.dart';
 import 'package:fiscal_printer/common/axon_model.dart';
-import 'package:dio/dio.dart' hide Response;
 
 class AxonSf20HttpClient extends BaseAxonClient {
   AxonSf20HttpClient(super.config);
@@ -72,53 +74,33 @@ class AxonSf20HttpClient extends BaseAxonClient {
     String method = 'GET',
     String? cmd,
   }) async {
-    final Result response = Result(
+    final Result result = Result(
       ok: true,
     );
-    var headers = {'Content-Type': 'text/plain'};
-    if (cmd != null) {
-      headers['Content-Length'] = cmd.length.toString();
-    }
+    var headers = <String, Object>{'Content-Type': 'text/plain'};
+    if (cmd != null) headers['Content-Length'] = cmd.length;
+
     try {
-      final http = Dio();
-      final res = await http.request(
-        url.toString(),
-        data: cmd,
-        options: Options(
-          method: method,
-          headers: headers,
-        ),
-      );
-      response.body = res.data;
-      response.original = Original(
+      final http = HttpClient();
+      final request = await http.openUrl(method, url);
+      headers.forEach((key, value) {
+        request.headers.set(key, value, preserveHeaderCase: true);
+      });
+      if (cmd != null) request.write(cmd);
+      final response = await request.close();
+      final data = response.transform(utf8.decoder).join();
+      result.body = data;
+      result.original = Original(
         req: {
-          'url': res.realUri,
-          'headers': res.requestOptions.headers,
-          'data': res.requestOptions.data,
+          'headers': headers,
+          'url': url,
         },
-        res: res.data,
+        res: {
+          'statusCode': response.statusCode,
+          'body': data,
+        },
       );
-      return response;
-      // if (method == "POST") {
-      //   final res = await http.post(
-      //     url.toString(),
-      //     data: cmd,
-      //   );
-      //   response.body = '${res.statusCode}:${res.statusMessage}';
-      //   response.original = Original(
-      //     req: res.requestOptions.toString(),
-      //     res: res.data,
-      //   );
-      //   return response;
-      // } else {
-      //   final res = await http.get(url.toString());
-      //   response.body = res.data;
-      //   response.original = Original(
-      //     req: url,
-      //     res: res.data,
-      //   );
-      //   return response;
-      // }
+      return result;
     } catch (e) {
       return Result(
         ok: false,

@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:dio/dio.dart' hide Response;
+import 'dart:io';
 
 import 'package:xml/xml.dart';
 import 'package:xml2json/xml2json.dart';
@@ -93,7 +93,8 @@ class CustomXmlHttpClient extends BaseCustomClient {
   Future<Response> send(XmlDocument xmlDoc, [bool isGetInfo = false]) async {
     // build the printer server url based on config
     final config = getConfig();
-    final url = 'http://${config.host}/xml/printer.htm';
+    final url = Uri.http(config.host, 'xml/printer.htm');
+    // 'http://${config.host}/xml/printer.htm';
     // build xml string
     final xmlStr = _parseRequest(xmlDoc);
     // send
@@ -103,23 +104,25 @@ class CustomXmlHttpClient extends BaseCustomClient {
       'Content-Type': 'text/xml;charset=utf-8',
       'authorization': authorization,
     };
-    final options = BaseOptions()..headers.addAll(headers);
-    final http = Dio(options);
     try {
-      final res = await http.post(
-        url,
-        data: xmlStr,
-      );
-      // final data = res.data;
-      final data = res.data;
-      final resXmlStr = data;
-      final response = parseResponse(data, isGetInfo);
+      final http = HttpClient();
+      final request = await http.postUrl(url);
+      headers.forEach((key, value) {
+        request.headers.set(key, value, preserveHeaderCase: true);
+      });
+      request.write(xmlStr);
+      final response = await request.close();
+      final data = await response.transform(utf8.decoder).join();
 
-      response.original = Original(
+      // final data = res.data;
+      final resXmlStr = data;
+      final result = parseResponse(data, isGetInfo);
+
+      result.original = Original(
         req: xmlStr,
         res: resXmlStr,
       );
-      return response;
+      return result;
     } catch (e) {
       return Response(
         ok: false,

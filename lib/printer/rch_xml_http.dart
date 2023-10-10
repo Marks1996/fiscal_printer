@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:dio/dio.dart';
+import 'dart:io';
 import 'package:fiscal_printer/common/rch_client.dart';
 import 'package:xml/xml.dart';
 import 'package:xml2json/xml2json.dart';
@@ -29,28 +29,32 @@ class RchXmlHttpClient extends BaseRchClient {
   Future<Result> send(XmlDocument xmlDoc) async {
     // build the printer server url based on config
     final config = getConfig();
-    final url = 'http://${config.host}/service.cgi';
+    final url = Uri.http(config.host, 'service.cgi');
+    // 'http://${config.host}/service.cgi';
     // build xml string
     final xmlStr = _parseRequest(xmlDoc);
 
     /// send
     final headers = {
       'Content-Type': 'application/xml',
+      'Content-Length': xmlStr.length,
     };
-    final options = BaseOptions()
-      ..headers.addAll(headers)
-      ..connectTimeout = 30000 
-      ..receiveTimeout = 30000;
-    final http = Dio(options);
-    try {
-      // add connecttime 30s
-      final res = await http.post(url, data: xmlStr);
-      // add header
-      final resXmlStr = res.data;
 
-      final response = await _parseResponse(resXmlStr);
-      response.original = Original(req: xmlStr, res: resXmlStr);
-      return response;
+    try {
+      final http = HttpClient();
+      final request = await http.postUrl(url);
+      headers.forEach((key, value) {
+        request.headers.set(key, value, preserveHeaderCase: true);
+      });
+      request.write(xmlStr);
+      final response = await request.close();
+      final data = await response.transform(utf8.decoder).join();
+      // add header
+      final resXmlStr = data;
+
+      final result = await _parseResponse(resXmlStr);
+      result.original = Original(req: xmlStr, res: resXmlStr);
+      return result;
     } catch (e) {
       return Result(
         ok: false,
