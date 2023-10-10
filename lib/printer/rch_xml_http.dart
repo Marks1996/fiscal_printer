@@ -39,7 +39,8 @@ class RchXmlHttpClient extends BaseRchClient {
     };
     final options = BaseOptions()
       ..headers.addAll(headers)
-      ..connectTimeout = 30000;
+      ..connectTimeout = 30000 
+      ..receiveTimeout = 30000;
     final http = Dio(options);
     try {
       // add connecttime 30s
