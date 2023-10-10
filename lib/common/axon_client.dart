@@ -8,15 +8,15 @@ abstract class BaseAxonClient {
   getConfig() => config;
 
   /// 获取登录状态信息
-  Future<Response> status();
+  Future<Result> status();
 
   /// 客显显示
-  Future<Response> dispWrite(String ln1, String ln2);
+  Future<Result> dispWrite(String ln1, String ln2);
 
   /// 发送键盘命令
-  Future<Response> keybWrite(String code);
-  Future<Response> operWrite(String code, String idx);
-  Future<Response> protoCmd(int js, String pkt);
-  Future<Response> snedTicketCmd(String cmd);
-  Future<Response> ticketCmd(int js);
+  Future<Result> keybWrite(String code);
+  Future<Result> operWrite(String code, String idx);
+  Future<Result> protoCmd(int js, String pkt);
+  Future<Result> snedTicketCmd(String cmd);
+  Future<Result> ticketCmd(int js);
 }

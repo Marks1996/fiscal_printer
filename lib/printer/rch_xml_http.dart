@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:dio/dio.dart' hide Response;
+import 'package:dio/dio.dart';
 import 'package:fiscal_printer/common/rch_client.dart';
 import 'package:xml/xml.dart';
 import 'package:xml2json/xml2json.dart';
