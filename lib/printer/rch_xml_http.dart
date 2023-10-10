@@ -16,7 +16,7 @@ class RchXmlHttpClient extends BaseRchClient {
   /// send Command to fiscal printer
   /// commands
   @override
-  Future<Response> executeCommand(List<String> commands) {
+  Future<Result> executeCommand(List<String> commands) {
     final xmlDoc = _convertCommandToXmlDoc(commands);
     return send(xmlDoc);
   }
@@ -26,7 +26,7 @@ class RchXmlHttpClient extends BaseRchClient {
   // *********************
 
   /// send to the printer server
-  Future<Response> send(XmlDocument xmlDoc) async {
+  Future<Result> send(XmlDocument xmlDoc) async {
     // build the printer server url based on config
     final config = getConfig();
     final url = 'http://${config.host}/service.cgi';
@@ -51,7 +51,7 @@ class RchXmlHttpClient extends BaseRchClient {
       response.original = Original(req: xmlStr, res: resXmlStr);
       return response;
     } catch (e) {
-      return Response(
+      return Result(
         ok: false,
         body: e,
         original: Original(
@@ -90,7 +90,7 @@ class RchXmlHttpClient extends BaseRchClient {
   ///               <busy>0</busy>
   ///        </Request>
   ///   </Service>
-  Future<Response> _parseResponse(String xmlStr) async {
+  Future<Result> _parseResponse(String xmlStr) async {
     // create xml parser
     Map? response;
     // explicitArray: Always put child nodes in an array if true; otherwise an array is created only if there is more than one.
@@ -105,7 +105,7 @@ class RchXmlHttpClient extends BaseRchClient {
       // get response data
       response = xmlJson[xmlRoot];
     }
-    return Response(
+    return Result(
       ok: response != null &&
           response[xmlReq] != null &&
           response[xmlReq]['errorCode'] == '0',

@@ -80,8 +80,7 @@ class AxonSf20HttpClient extends BaseAxonClient {
     );
     var headers = {'Content-Type': 'text/plain'};
     if (cmd != null) {
-      headers[HttpHeaders.contentLengthHeader] =
-          utf8.encode(cmd).length.toString();
+      headers['Content-Length'] = cmd.length.toString();
     }
     try {
       final http = Dio();

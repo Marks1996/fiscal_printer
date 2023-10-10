@@ -7,5 +7,5 @@ abstract class BaseRchClient {
 
   getConfig() => config;
 
-  Future<Response> executeCommand(List<String> commands);
+  Future<Result> executeCommand(List<String> commands);
 }

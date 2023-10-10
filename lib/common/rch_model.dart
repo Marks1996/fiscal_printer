@@ -5,11 +5,11 @@ class Config {
   });
 }
 
-class Response {
+class Result {
   bool? ok;
   dynamic body;
   Original? original;
-  Response({
+  Result({
     this.ok,
     this.body,
     this.original,
