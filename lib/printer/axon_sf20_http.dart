@@ -94,7 +94,7 @@ class AxonSf20HttpClient extends BaseAxonClient {
         req: {
           'headers': headers,
           'url': url,
-          'data': data,
+          'data': cmd,
         },
         res: {
           'statusCode': response.statusCode,
