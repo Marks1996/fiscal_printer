@@ -88,7 +88,7 @@ class AxonSf20HttpClient extends BaseAxonClient {
       });
       if (cmd != null) request.write(cmd);
       final response = await request.close();
-      final data = response.transform(utf8.decoder).join();
+      final data = await response.transform(utf8.decoder).join();
       result.body = data;
       result.original = Original(
         req: {
