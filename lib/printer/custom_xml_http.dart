@@ -117,10 +117,16 @@ class CustomXmlHttpClient extends BaseCustomClient {
       // final data = res.data;
       final resXmlStr = data;
       final result = parseResponse(data, isGetInfo);
-
       result.original = Original(
-        req: xmlStr,
-        res: resXmlStr,
+        req: {
+          'headers': headers,
+          'url': url,
+          'data': xmlStr,
+        },
+        res: {
+          'statusCode': response.statusCode,
+          'body': resXmlStr,
+        },
       );
       return result;
     } catch (e) {

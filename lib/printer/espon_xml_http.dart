@@ -441,8 +441,15 @@ class EpsonXmlHttpClient extends BaseEpsonClient {
       final resXmlStr = data;
       final result = parseResponse(resXmlStr);
       result.original = Original(
-        req: xmlStr,
-        res: resXmlStr,
+        req: {
+          'headers': headers,
+          'url': url,
+          'data': xmlStr,
+        },
+        res: {
+          'statusCode': response.statusCode,
+          'body': resXmlStr,
+        },
       );
       return result;
     } catch (e) {

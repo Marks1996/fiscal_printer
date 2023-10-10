@@ -53,7 +53,17 @@ class RchXmlHttpClient extends BaseRchClient {
       final resXmlStr = data;
 
       final result = await _parseResponse(resXmlStr);
-      result.original = Original(req: xmlStr, res: resXmlStr);
+      result.original = Original(
+        req: {
+          'headers': headers,
+          'url': url,
+          'data': xmlStr,
+        },
+        res: {
+          'statusCode': response.statusCode,
+          'body': resXmlStr,
+        },
+      );
       return result;
     } catch (e) {
       return Result(
