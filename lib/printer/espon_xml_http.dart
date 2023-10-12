@@ -405,19 +405,14 @@ class EpsonXmlHttpClient extends BaseEpsonClient {
     final config = getConfig();
     final queryParameters = <String, String>{};
     // 'http://${config.host}/cgi-bin/fpmate.cgi';
-    // var url = '${config.host}';
-    // var prefix = '?';
     if (config.deviceId != null) {
-      // url += '${prefix}devid=${config.deviceId}';
-      // prefix = '&';
-      queryParameters['devid'] = config.deviceId;
+      queryParameters['devid'] = '${config.deviceId}';
     }
     if (config.timeout != null && config.timeout > 0) {
-      // url += '${prefix}timeout=${config.timeout}';
-      queryParameters['timeout'] = config.timeout;
+      queryParameters['timeout'] = '${config.timeout}';
     }
 
-    var url = Uri.http(config.host, 'cgi-bin/fpmate.cgi');
+    var url = Uri.http(config.host, 'cgi-bin/fpmate.cgi', queryParameters);
 
     /// build xml string
     final xmlStr = parseRequest(xmlDoc);
@@ -427,6 +422,7 @@ class EpsonXmlHttpClient extends BaseEpsonClient {
       'Content-Type': 'text/xml;charset=utf-8',
     };
     final http = HttpClient();
+    http.connectionTimeout = const Duration(seconds: 30);
     try {
       final request = await http.postUrl(url);
       headers.forEach((key, value) {
