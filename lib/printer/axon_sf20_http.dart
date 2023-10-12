@@ -80,7 +80,6 @@ class AxonSf20HttpClient extends BaseAxonClient {
     var headers = <String, Object>{'Content-Type': 'text/plain'};
     if (cmd != null) headers['Content-Length'] = cmd.length;
     final http = HttpClient();
-    http.connectionTimeout = const Duration(seconds: 30);
     try {
       final request = await http.openUrl(method, url);
       headers.forEach((key, value) {

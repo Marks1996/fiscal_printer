@@ -40,7 +40,6 @@ class RchXmlHttpClient extends BaseRchClient {
       'Content-Length': xmlStr.length,
     };
     final http = HttpClient();
-    http.connectionTimeout = const Duration(seconds: 30);
     try {
       final request = await http.postUrl(url);
       headers.forEach((key, value) {
