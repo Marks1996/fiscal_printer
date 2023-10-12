@@ -426,9 +426,8 @@ class EpsonXmlHttpClient extends BaseEpsonClient {
     final headers = {
       'Content-Type': 'text/xml;charset=utf-8',
     };
-
+    final http = HttpClient();
     try {
-      final http = HttpClient();
       final request = await http.postUrl(url);
       headers.forEach((key, value) {
         request.headers.set(key, value, preserveHeaderCase: true);
@@ -436,7 +435,6 @@ class EpsonXmlHttpClient extends BaseEpsonClient {
       request.write(xmlStr);
       final response = await request.close();
       final data = await response.transform(utf8.decoder).join();
-
       // add header
       final resXmlStr = data;
       final result = parseResponse(resXmlStr);
@@ -458,6 +456,8 @@ class EpsonXmlHttpClient extends BaseEpsonClient {
         body: e,
         original: Original(req: xmlStr, res: null),
       );
+    } finally {
+      http.close();
     }
   }
 

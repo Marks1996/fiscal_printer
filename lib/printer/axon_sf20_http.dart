@@ -79,9 +79,8 @@ class AxonSf20HttpClient extends BaseAxonClient {
     );
     var headers = <String, Object>{'Content-Type': 'text/plain'};
     if (cmd != null) headers['Content-Length'] = cmd.length;
-
+    final http = HttpClient();
     try {
-      final http = HttpClient();
       final request = await http.openUrl(method, url);
       headers.forEach((key, value) {
         request.headers.set(key, value, preserveHeaderCase: true);
@@ -108,6 +107,8 @@ class AxonSf20HttpClient extends BaseAxonClient {
         body: e,
         original: Original(req: headers, res: null),
       );
+    } finally {
+      http.close();
     }
   }
 }

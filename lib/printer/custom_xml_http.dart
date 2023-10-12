@@ -104,8 +104,8 @@ class CustomXmlHttpClient extends BaseCustomClient {
       'Content-Type': 'text/xml;charset=utf-8',
       'authorization': authorization,
     };
+    final http = HttpClient();
     try {
-      final http = HttpClient();
       final request = await http.postUrl(url);
       headers.forEach((key, value) {
         request.headers.set(key, value, preserveHeaderCase: true);
@@ -135,6 +135,8 @@ class CustomXmlHttpClient extends BaseCustomClient {
         body: e,
         original: Original(req: xmlStr, res: null),
       );
+    } finally {
+      http.close();
     }
   }
 

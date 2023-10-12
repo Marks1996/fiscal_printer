@@ -39,9 +39,8 @@ class RchXmlHttpClient extends BaseRchClient {
       'Content-Type': 'application/xml',
       'Content-Length': xmlStr.length,
     };
-
+    final http = HttpClient();
     try {
-      final http = HttpClient();
       final request = await http.postUrl(url);
       headers.forEach((key, value) {
         request.headers.set(key, value, preserveHeaderCase: true);
@@ -74,6 +73,8 @@ class RchXmlHttpClient extends BaseRchClient {
           res: null,
         ),
       );
+    } finally {
+      http.close();
     }
   }
 
