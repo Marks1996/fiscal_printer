@@ -394,7 +394,7 @@ class EpsonXmlHttpClient extends BaseEpsonClient {
         nest: () {
       xmlBuilder.element(EpsonXmlHttpClient._xmlBody, nest: xmlDoc);
     });
-    return xmlBuilder.buildDocument().toXmlString(pretty: true);
+    return xmlBuilder.buildDocument().toXmlString(pretty: false);
   }
 
   /// send to the printer server

@@ -90,7 +90,7 @@ class RchXmlHttpClient extends BaseRchClient {
   ///       </cmd>
   ///  </Service>
   String _parseRequest(XmlDocument xmlDoc) {
-    final reqXmlStr = xmlDoc.toXmlString(pretty: true);
+    final reqXmlStr = xmlDoc.toXmlString(pretty: false);
     return reqXmlStr;
   }
 
