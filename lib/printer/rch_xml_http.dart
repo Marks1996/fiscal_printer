@@ -37,7 +37,7 @@ class RchXmlHttpClient extends BaseRchClient {
     /// send
     final headers = {
       'Content-Type': 'application/xml',
-      'Content-Length': xmlStr.length,
+      'Content-Length': xmlStr.trim().length,
     };
     final http = HttpClient();
     try {
@@ -90,7 +90,7 @@ class RchXmlHttpClient extends BaseRchClient {
   ///       </cmd>
   ///  </Service>
   String _parseRequest(XmlDocument xmlDoc) {
-    final reqXmlStr = xmlDoc.toXmlString(pretty: false);
+    final reqXmlStr = xmlDoc.toXmlString(pretty: true);
     return reqXmlStr;
   }
 

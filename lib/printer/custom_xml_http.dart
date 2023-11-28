@@ -52,7 +52,7 @@ class CustomXmlHttpClient extends BaseCustomClient {
   /// [xmlDoc]
   /// [returns]
   String _parseRequest(XmlDocument xmlDoc) {
-    final reqXmlStr = xmlDoc.toXmlString(pretty: false);
+    final reqXmlStr = xmlDoc.toXmlString(pretty: true);
     return reqXmlStr;
   }
 
@@ -103,7 +103,7 @@ class CustomXmlHttpClient extends BaseCustomClient {
     final headers = {
       'Content-Type': 'text/xml;charset=utf-8',
       'authorization': authorization,
-      'Content-Length' :xmlStr.length,
+      'Content-Length': xmlStr.trim().length,
     };
     final http = HttpClient();
     try {

@@ -394,7 +394,7 @@ class EpsonXmlHttpClient extends BaseEpsonClient {
         nest: () {
       xmlBuilder.element(EpsonXmlHttpClient._xmlBody, nest: xmlDoc);
     });
-    return xmlBuilder.buildDocument().toXmlString(pretty: false);
+    return xmlBuilder.buildDocument().toXmlString(pretty: true);
   }
 
   /// send to the printer server
@@ -420,7 +420,7 @@ class EpsonXmlHttpClient extends BaseEpsonClient {
     /// send
     final headers = {
       'Content-Type': 'text/xml;charset=utf-8',
-      'Content-Length' :xmlStr.length,
+      'Content-Length': xmlStr.trim().length,
     };
     final http = HttpClient();
     try {
