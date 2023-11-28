@@ -420,9 +420,9 @@ class EpsonXmlHttpClient extends BaseEpsonClient {
     /// send
     final headers = {
       'Content-Type': 'text/xml;charset=utf-8',
+      'Content-Length' :xmlStr.length,
     };
     final http = HttpClient();
-    http.connectionTimeout = const Duration(seconds: 30);
     try {
       final request = await http.postUrl(url);
       headers.forEach((key, value) {
