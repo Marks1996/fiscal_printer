@@ -416,6 +416,7 @@ class EpsonXmlHttpClient extends BaseEpsonClient {
 
     /// build xml string
     final xmlStr = parseRequest(xmlDoc);
+    final requestData = utf8.encode(xmlStr);
 
     /// send
     final headers = {
@@ -428,7 +429,8 @@ class EpsonXmlHttpClient extends BaseEpsonClient {
       headers.forEach((key, value) {
         request.headers.set(key, value, preserveHeaderCase: true);
       });
-      request.write(xmlStr);
+      request.add(requestData);
+      await request.flush();
       final response = await request.close();
       final data = await response.transform(utf8.decoder).join();
       // add header

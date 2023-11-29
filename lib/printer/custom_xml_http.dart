@@ -97,13 +97,14 @@ class CustomXmlHttpClient extends BaseCustomClient {
     // 'http://${config.host}/xml/printer.htm';
     // build xml string
     final xmlStr = _parseRequest(xmlDoc);
+    final requestData = utf8.encode(xmlStr);
     // send
     final authorization =
         'Basic ${base64.encode(utf8.encode('${config.fiscalId ?? ''}:${config.fiscalId ?? ''}'))}';
     final headers = {
       'Content-Type': 'text/xml;charset=utf-8',
       'authorization': authorization,
-      'Content-Length': xmlStr.trim().length,
+      'Content-Length': requestData.length,
     };
     final http = HttpClient();
     try {
@@ -111,7 +112,8 @@ class CustomXmlHttpClient extends BaseCustomClient {
       headers.forEach((key, value) {
         request.headers.set(key, value, preserveHeaderCase: true);
       });
-      request.write(xmlStr);
+      request.add(requestData);
+      await request.flush();
       final response = await request.close();
       final data = await response.transform(utf8.decoder).join();
 

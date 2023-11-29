@@ -33,11 +33,12 @@ class RchXmlHttpClient extends BaseRchClient {
     // 'http://${config.host}/service.cgi';
     // build xml string
     final xmlStr = _parseRequest(xmlDoc);
+    final requestData = utf8.encode(xmlStr);
 
     /// send
     final headers = {
       'Content-Type': 'application/xml',
-      'Content-Length': xmlStr.trim().length,
+      'Content-Length': requestData.length,
     };
     final http = HttpClient();
     try {
@@ -45,7 +46,8 @@ class RchXmlHttpClient extends BaseRchClient {
       headers.forEach((key, value) {
         request.headers.set(key, value, preserveHeaderCase: true);
       });
-      request.write(xmlStr);
+      request.add(requestData);
+      await request.flush();
       final response = await request.close();
       final data = await response.transform(utf8.decoder).join();
       // add header
