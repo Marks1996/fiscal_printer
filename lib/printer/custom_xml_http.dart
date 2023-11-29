@@ -380,7 +380,8 @@ class CustomXmlHttpClient extends BaseCustomClient {
           } else if (subtotal.type == ItemType.CANCEL) {
             if (subtotal.operations != null &&
                 subtotal.operations!.isNotEmpty) {
-              for (final operation in subtotal.operations!) {
+              // ignore: unused_local_variable
+              for (var operation in subtotal.operations!) {
                 xmlBuilder.element('printRecSubtotalAdjustVoid');
               }
             }
