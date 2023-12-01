@@ -421,7 +421,7 @@ class EpsonXmlHttpClient extends BaseEpsonClient {
     /// send
     final headers = {
       'Content-Type': 'text/xml;charset=utf-8',
-      'Content-Length': xmlStr.trim().length,
+      'Content-Length': requestData.length,
     };
     final http = HttpClient();
     try {
