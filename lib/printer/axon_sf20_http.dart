@@ -46,7 +46,7 @@ class AxonSf20HttpClient extends BaseAxonClient {
 
   ///加载多个 SF20 协议命令，以便后续打印。
   @override
-  Future<Result> snedTicketCmd(String cmd) async {
+  Future<Result> sendTicketCmd(String cmd) async {
     final config = getConfig();
     final url = Uri.http(config.host, '_fileio', {'cmd': '3'});
     return await _send(url, method: 'POST', cmd: cmd);
